@@ -11,13 +11,13 @@ import socket
 
 # SPREMENLJIVKE
 step_size = 20
-screen_width = 600
-screen_height = 400
-wall_width = 300
-wall_height = 250
+screen_width = 1600
+screen_height = 1400
+wall_width = 600
+wall_height = 500
 score = 0
 high_score = 0
-delay_initial = 0.2
+delay_initial = 0.4
 delay = delay_initial
 # mark timer
 timer = time.time()
@@ -298,9 +298,10 @@ while True:
     start = time.time()
     next_move = None
     while abs(start - time.time()) < delay:
+        time.sleep(0.001)
         try:
             data, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
-            next_move = bytes.decode(data, "ascii")
+            next_move = bytes.decode(data, "utf8")
             print(f"got {next_move}, from {addr}")
         except BlockingIOError:
             # Throws BlockingIOError when no data is available
@@ -308,11 +309,15 @@ while True:
 
     # The last received valid character is used to determine new direction
     if next_move is not None:
-        if next_move == "w":
+        if next_move == "gor":
+            print("Goin up")
             go_up()
-        elif next_move == "a":
+        elif next_move == "levo":
+            print("Goin left")
             go_left()
-        elif next_move == "s":
+        elif next_move == "dol":
+            print("Goin down")
             go_down()
-        elif next_move == "d":
+        elif next_move == "desno":
+            print("Goin right")
             go_right()
